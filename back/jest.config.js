@@ -4,12 +4,11 @@
 module.exports = {
     clearMocks: true,
     coverageDirectory: 'temp/coverage',
-    testEnvironment: 'jsdom',
+    testEnvironment: 'node',
     collectCoverage: true,
     reporters: ['default'],
     collectCoverageFrom: [
-        'ui-src/**/*.ts*',
-        '!ui-src/**/*.stories.tsx',
+        'src/**/*.ts*',
         '!ui-src/**/*.types.ts',
         '!ui-src/**/*.d.ts',
         '!ui-src/**/index.ts*'
@@ -26,14 +25,9 @@ module.exports = {
     ],
     setupFilesAfterEnv: ['<rootDir>/internals/jestSettings.js'],
     transform: {
-        '^.+\\.(js|jsx|ts|tsx)$': '<rootDir>/node_modules/babel-jest',
-        '.+\\.(css|styl|less|sass|scss)$': 'jest-css-modules-transform'
+        '^.+\\.(js|jsx|ts|tsx)$': '<rootDir>/node_modules/babel-jest'
     },
-    moduleNameMapper: {
-        '\\.(jpg|ico|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
-            '<rootDir>/internals/__mocks__/fileMock.js',
-        '\\.svg': '<rootDir>/internals/__mocks__/svg.js'
-    },
+    moduleNameMapper: {},
     verbose: false,
     testPathIgnorePatterns: ['/node_modules/', 'temp'],
     transformIgnorePatterns: []

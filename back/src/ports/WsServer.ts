@@ -7,8 +7,14 @@ interface MainControllerForWs {
 export class WsServer {
     private wsClient = null;
     private wsServer = null;
+    private ctrl: MainControllerForWs = null;
 
-    constructor(private ctrl: MainControllerForWs) {}
+    constructor() {}
+
+    setCtrl = (ctrl: MainControllerForWs) => {
+        this.ctrl = ctrl;
+        return this;
+    };
 
     openWsServer = (port: number) => {
         this.wsServer = new WebSocket.Server({ port });

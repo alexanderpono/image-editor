@@ -1,3 +1,4 @@
+import { Logger } from './ports/Logger';
 import { WsServer } from './ports/WsServer';
 import { WS } from './ports/WsServer.types';
 
@@ -6,36 +7,30 @@ interface JsonMessageFromUI {
     data: string;
 }
 export class ServerController {
-    private ws: WsServer;
-
-    constructor(wsPort: number, private restPort: number) {
-        this.ws = new WsServer(this);
-
+    constructor(wsPort: number, private ws: WsServer, private logger: Logger) {
         this.ws.openWsServer(wsPort);
 
-        console.log('ServerController() constructor()');
+        this.logger.log('ServerController() constructor()');
     }
 
     onWsConnect = () => {
-        console.log('onWsConnect()');
+        this.logger.log('onWsConnect()');
         this.ws.send(WS.createWsHello());
     };
 
     onWsMesage = (message: string) => {
-        console.log('on(message) message=', message);
+        this.logger.log('on(message) message=', message);
         try {
             const jsonMessage: JsonMessageFromUI = JSON.parse(message);
-            console.log('on(message) jsonMessage=', jsonMessage);
+            this.logger.log('on(message) jsonMessage=', jsonMessage);
             switch (jsonMessage.action) {
-                case 'TO_SERIAL':
-                    console.log('jsonMessage=', jsonMessage);
-                    break;
                 default:
-                    console.log('Ws: Неизвестная команда');
-                    break;
+                    this.logger.log('Ws: Неизвестная команда');
+                    return 'Ws: Неизвестная команда';
             }
         } catch (error) {
-            console.log('Ws: Ошибка', error);
+            this.logger.log('Ws: Ошибка', error);
+            return 'WS: not a JSON';
         }
     };
 }
