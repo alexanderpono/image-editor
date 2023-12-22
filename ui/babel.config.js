@@ -28,7 +28,8 @@ module.exports = {
             {
                 root: ['./src'],
                 alias: {
-                    '@src': './src'
+                    '@src': './src',
+                    '@config': '../config'
                 }
             }
         ]
