@@ -10,6 +10,10 @@ export enum EditEvent {
 export interface EditAction {
     type: EditEvent;
 }
+export const defaultEditAction: EditAction = {
+    type: EditEvent.DEFAULT
+};
+
 export interface NewDocumentAction {
     type: EditEvent.NEW_DOCUMENT;
     width: number;

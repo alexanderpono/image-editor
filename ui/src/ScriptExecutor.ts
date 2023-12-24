@@ -59,6 +59,10 @@ export class ScriptExecutor {
                     state: SEState.EXECUTING_LINE,
                     event: SEEvent.COMMAND_FINISHED,
                     action: () => {
+                        const finishedAction = this.script[this.lineBeingExecuted];
+                        const history = this.doc.getDoc().history;
+                        this.doc.docHistory([...history, finishedAction]);
+
                         this.lineBeingExecuted++;
                         console.log('this.lineBeingExecuted=', this.lineBeingExecuted);
                         if (this.lineBeingExecuted >= this.script.length) {
