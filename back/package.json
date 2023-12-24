@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest",
     "back": "nodemon",
+    "back2": "ts-node --project tsconfig.json -r tsconfig-paths/register src/back.ts",
     "build": "webpack --node-env=production",
     "build-dev": "webpack --node-env=development",
     "ts-check": "npx tsc --skipLibCheck"

@@ -17,12 +17,15 @@ export class ServerController {
     ) {
         this.ws.openWsServer(wsPort);
 
+        setTimeout(() => {
+            this.restServer.run();
+        }, 0);
+
         this.logger.log('ServerController() constructor()');
     }
 
     onWsConnect = () => {
         this.logger.log('onWsConnect()');
-        this.restServer.run();
         this.ws.send(WS.createWsHello());
         this.ws.send(WS.createWsCrop(2286, 0, 1827, 976, 'data/in/01.png', 'data/out/01.png'));
     };

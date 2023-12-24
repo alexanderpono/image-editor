@@ -3,11 +3,12 @@ import { render } from 'react-dom';
 import { WsClient } from './ports/WsClient';
 import { WsCropMessage, WsMessage } from './ports/WsMessage';
 import { EditAction, editAction } from './editAction';
-import { Scene, UIDocument } from './UIController.types';
+import { Scene } from './UIController.types';
 import { ScriptExecutor } from './ScriptExecutor';
 import { AppUI } from './components/AppUI';
 import { Provider } from 'react-redux';
 import { store } from './store';
+import { DocStateManager } from './store/doc/DocStateManager';
 
 export class UIController {
     protected canvasRef: React.RefObject<HTMLCanvasElement>;
@@ -71,6 +72,12 @@ export class UIController {
     );
 
     onLayerChanged = () => {
-        console.log('onLayerChanged()');
+        console.error('onLayerChanged()');
+
+        const canvas = this.canvasRef.current as unknown as HTMLCanvasElement;
+        const docState = DocStateManager.create().getDoc();
+
+        const context = canvas.getContext('2d') as CanvasRenderingContext2D;
+        this.scene.render(context, docState.size);
     };
 }

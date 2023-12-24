@@ -42,4 +42,8 @@ export class Scene {
     };
 
     getDirty = () => this.dirty;
+
+    render = (context: CanvasRenderingContext2D, viewPortSize: Point2D) => {
+        context.drawImage(this.layer.pic, 0, 0);
+    };
 }

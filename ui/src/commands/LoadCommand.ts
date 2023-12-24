@@ -15,6 +15,7 @@ export class LoadCommand {
                 encodeURIComponent(this.action.fileName);
             pic.onload = () => {
                 this.scene.setPic(pic);
+                this.scene.setDirty(true);
                 resolve('OK');
             };
 
