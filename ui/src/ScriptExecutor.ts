@@ -1,4 +1,5 @@
 import { CommandsFactory } from './CommandsFactory';
+import { Scene } from './UIController.types';
 import { EditAction } from './editAction';
 import { DocStateManager } from './store/doc/DocStateManager';
 
@@ -9,7 +10,8 @@ export enum SEState {
 export enum SEEvent {
     EXECUTE_SCRIPT = 'EXECUTE_SCRIPT',
     COMMAND_FINISHED = 'COMMAND_FINISHED',
-    SCRIPT_FINISHED = 'SCRIPT_FINISHED'
+    SCRIPT_FINISHED = 'SCRIPT_FINISHED',
+    COMMAND_FAILED = 'COMMAND_FAILED'
 }
 export interface STTLine {
     state: SEState;
@@ -22,7 +24,11 @@ export class ScriptExecutor {
     private STT: STTLine[] = [];
     private lineBeingExecuted = 0;
     private script: EditAction[] = [];
-    constructor(private factory: CommandsFactory, private doc: DocStateManager) {}
+    constructor(
+        private factory: CommandsFactory,
+        private doc: DocStateManager,
+        private scene: Scene
+    ) {}
 
     process = (event: SEEvent, data?: unknown) => {
         const actualSTTLine = this.STT.find(
@@ -48,10 +54,15 @@ export class ScriptExecutor {
                         this.lineBeingExecuted = 0;
                         console.log('this.lineBeingExecuted=', this.lineBeingExecuted);
                         const action = this.script[this.lineBeingExecuted];
-                        const command = this.factory.getCommand(action, this.doc);
-                        command.execute().then(() => {
-                            this.process(SEEvent.COMMAND_FINISHED);
-                        });
+                        const command = this.factory.getCommand(action, this.doc, this.scene);
+                        command
+                            .execute()
+                            .then(() => {
+                                this.process(SEEvent.COMMAND_FINISHED);
+                            })
+                            .catch((e) => {
+                                this.process(SEEvent.COMMAND_FAILED);
+                            });
                     },
                     newState: SEState.EXECUTING_LINE
                 },
@@ -70,12 +81,26 @@ export class ScriptExecutor {
                             return;
                         }
                         const action = this.script[this.lineBeingExecuted];
-                        const command = this.factory.getCommand(action, this.doc);
-                        command.execute().then(() => {
-                            this.process(SEEvent.COMMAND_FINISHED);
-                        });
+                        const command = this.factory.getCommand(action, this.doc, this.scene);
+                        command
+                            .execute()
+                            .then(() => {
+                                this.process(SEEvent.COMMAND_FINISHED);
+                            })
+                            .catch((e) => {
+                                this.process(SEEvent.COMMAND_FAILED);
+                            });
                     },
                     newState: SEState.EXECUTING_LINE
+                },
+                {
+                    state: SEState.EXECUTING_LINE,
+                    event: SEEvent.COMMAND_FAILED,
+                    action: () => {
+                        const action = this.script[this.lineBeingExecuted];
+                        console.error('FAIL ON COMMAND', action);
+                    },
+                    newState: SEState.READY
                 },
                 {
                     state: SEState.EXECUTING_LINE,

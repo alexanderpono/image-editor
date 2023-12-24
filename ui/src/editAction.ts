@@ -20,7 +20,7 @@ export interface NewDocumentAction {
     height: number;
 }
 
-export interface EditLoadAction {
+export interface LoadAction {
     type: EditEvent.LOAD;
     fileName: string;
     layerName: string;
@@ -48,7 +48,7 @@ export const editAction = {
         width,
         height
     }),
-    load: (fileName: string, layerName: string): EditLoadAction => ({
+    load: (fileName: string, layerName: string): LoadAction => ({
         type: EditEvent.LOAD,
         fileName,
         layerName

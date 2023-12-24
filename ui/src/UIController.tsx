@@ -1,21 +1,18 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { WsClient } from './ports/WsClient';
-import { WsEvent } from '@config/WsEvent';
 import { WsCropMessage, WsMessage } from './ports/WsMessage';
 import { EditAction, editAction } from './editAction';
-import { UIDocument } from './UIController.types';
-import { CommandsFactory } from './CommandsFactory';
+import { Scene, UIDocument } from './UIController.types';
 import { ScriptExecutor } from './ScriptExecutor';
 import { AppUI } from './components/AppUI';
 import { Provider } from 'react-redux';
 import { store } from './store';
-import { doc } from './store/doc/docReducer';
 
 export class UIController {
     protected canvasRef: React.RefObject<HTMLCanvasElement>;
 
-    constructor(private ws: WsClient, private executor: ScriptExecutor) {
+    constructor(private ws: WsClient, private executor: ScriptExecutor, private scene: Scene) {
         this.canvasRef = React.createRef<HTMLCanvasElement>();
     }
 
@@ -72,4 +69,8 @@ export class UIController {
             <AppUI ref={this.canvasRef} />
         </Provider>
     );
+
+    onLayerChanged = () => {
+        console.log('onLayerChanged()');
+    };
 }
