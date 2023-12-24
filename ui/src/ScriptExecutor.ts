@@ -1,5 +1,6 @@
 import { CommandsFactory } from './CommandsFactory';
 import { Action } from './editAction';
+import { DocStateManager } from './store/doc/DocStateManager';
 
 export enum SEState {
     READY = 'READY',
@@ -21,7 +22,7 @@ export class ScriptExecutor {
     private STT: STTLine[] = [];
     private lineBeingExecuted = 0;
     private script: Action[] = [];
-    constructor(private factory: CommandsFactory) {}
+    constructor(private factory: CommandsFactory, private doc: DocStateManager) {}
 
     process = (event: SEEvent, data?: unknown) => {
         const actualSTTLine = this.STT.find(
@@ -47,7 +48,7 @@ export class ScriptExecutor {
                         this.lineBeingExecuted = 0;
                         console.log('this.lineBeingExecuted=', this.lineBeingExecuted);
                         const action = this.script[this.lineBeingExecuted];
-                        const command = this.factory.getCommand(action);
+                        const command = this.factory.getCommand(action, this.doc);
                         command.execute().then(() => {
                             this.process(SEEvent.COMMAND_FINISHED);
                         });
@@ -65,7 +66,7 @@ export class ScriptExecutor {
                             return;
                         }
                         const action = this.script[this.lineBeingExecuted];
-                        const command = this.factory.getCommand(action);
+                        const command = this.factory.getCommand(action, this.doc);
                         command.execute().then(() => {
                             this.process(SEEvent.COMMAND_FINISHED);
                         });

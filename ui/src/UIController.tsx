@@ -65,7 +65,6 @@ export class UIController {
 
     renderUI = () => {
         render(this.getUI(), document.getElementById('ui'));
-        store.dispatch(doc.size({ x: 1, y: 1 }));
     };
 
     getUI = () => (
