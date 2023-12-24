@@ -1,11 +1,11 @@
-import { Scene } from './UIController.types';
+import { Scene } from './GR/Scene';
 import { CloseDocument } from './commands/CloseDocument';
 import { LoadCommand } from './commands/LoadCommand';
 import { MoveByCommand } from './commands/MoveByCommand';
 import { NewDocumentCommand } from './commands/NewDocumentCommand';
 import { SaveAsPngCommand } from './commands/SaveAsPngCommand';
 import { UnknownCommand } from './commands/UnknownCommand';
-import { EditAction, EditEvent, LoadAction, NewDocumentAction } from './editAction';
+import { EditAction, EditEvent, LoadAction, MoveByAction, NewDocumentAction } from './editAction';
 import { DocStateManager } from './store/doc/DocStateManager';
 
 export class CommandsFactory {
@@ -16,7 +16,7 @@ export class CommandsFactory {
             case EditEvent.LOAD:
                 return new LoadCommand(action as LoadAction, scene);
             case EditEvent.MOVE_BY:
-                return new MoveByCommand();
+                return new MoveByCommand(action as MoveByAction, scene);
             case EditEvent.SAVE_AS_PNG:
                 return new SaveAsPngCommand();
             case EditEvent.CLOSE_DOCUMENT:

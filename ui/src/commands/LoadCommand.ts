@@ -1,6 +1,6 @@
-import { Scene } from '@src/UIController.types';
 import { LoadAction } from '@src/editAction';
 import { REST_SERVER_PORT } from '@config/const';
+import { Scene } from '@src/GR/Scene';
 
 export class LoadCommand {
     constructor(private action: LoadAction, private scene: Scene) {}

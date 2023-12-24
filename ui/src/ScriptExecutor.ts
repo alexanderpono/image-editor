@@ -1,5 +1,5 @@
 import { CommandsFactory } from './CommandsFactory';
-import { Scene } from './UIController.types';
+import { Scene } from './GR/Scene';
 import { EditAction } from './editAction';
 import { DocStateManager } from './store/doc/DocStateManager';
 

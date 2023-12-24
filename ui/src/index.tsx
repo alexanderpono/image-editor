@@ -7,7 +7,7 @@ import { UIController } from './UIController';
 import { ScriptExecutor } from './ScriptExecutor';
 import { CommandsFactory } from './CommandsFactory';
 import { DocStateManager } from './store/doc/DocStateManager';
-import { Scene } from './UIController.types';
+import { Scene } from './GR/Scene';
 
 console.log('image-editor-ui', APP_VERSION);
 document.title = 'image-editor-ui ' + APP_VERSION;

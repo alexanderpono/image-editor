@@ -27,7 +27,7 @@ export class ServerController {
     onWsConnect = () => {
         this.logger.log('onWsConnect()');
         this.ws.send(WS.createWsHello());
-        this.ws.send(WS.createWsCrop(2286, 0, 1827, 976, 'data/in/01.png', 'data/out/01.png'));
+        this.ws.send(WS.createWsCrop(2286, 9, 1827, 976, 'data/in/01.png', 'data/out/01.png'));
     };
 
     onWsMesage = (message: string) => {

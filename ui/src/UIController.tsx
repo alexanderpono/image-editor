@@ -3,12 +3,12 @@ import { render } from 'react-dom';
 import { WsClient } from './ports/WsClient';
 import { WsCropMessage, WsMessage } from './ports/WsMessage';
 import { EditAction, editAction } from './editAction';
-import { Scene } from './UIController.types';
 import { ScriptExecutor } from './ScriptExecutor';
 import { AppUI } from './components/AppUI';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import { DocStateManager } from './store/doc/DocStateManager';
+import { Scene } from './GR/Scene';
 
 export class UIController {
     protected canvasRef: React.RefObject<HTMLCanvasElement>;
