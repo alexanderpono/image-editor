@@ -7,7 +7,7 @@ export enum EditEvent {
     CLOSE_DOCUMENT = 'CLOSE_DOCUMENT'
 }
 
-export interface Action {
+export interface EditAction {
     type: EditEvent;
 }
 export interface NewDocumentAction {

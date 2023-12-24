@@ -1,5 +1,5 @@
 import { CommandsFactory } from './CommandsFactory';
-import { Action } from './editAction';
+import { EditAction } from './editAction';
 import { DocStateManager } from './store/doc/DocStateManager';
 
 export enum SEState {
@@ -21,7 +21,7 @@ export class ScriptExecutor {
     private state: SEState = SEState.READY;
     private STT: STTLine[] = [];
     private lineBeingExecuted = 0;
-    private script: Action[] = [];
+    private script: EditAction[] = [];
     constructor(private factory: CommandsFactory, private doc: DocStateManager) {}
 
     process = (event: SEEvent, data?: unknown) => {
@@ -37,7 +37,7 @@ export class ScriptExecutor {
         this.state = actualSTTLine.newState;
     };
 
-    execute = (script: Action[]): Promise<string> => {
+    execute = (script: EditAction[]): Promise<string> => {
         this.script = script;
         return new Promise((resolve, reject) => {
             this.STT = [

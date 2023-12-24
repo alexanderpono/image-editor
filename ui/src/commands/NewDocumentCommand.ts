@@ -1,4 +1,4 @@
-import { Action, NewDocumentAction } from '@src/editAction';
+import { NewDocumentAction } from '@src/editAction';
 import { DocStateManager } from '@src/store/doc/DocStateManager';
 
 export class NewDocumentCommand {

@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { WsClient } from './ports/WsClient';
 import { WsEvent } from '@config/WsEvent';
 import { WsCropMessage, WsMessage } from './ports/WsMessage';
-import { Action, editAction } from './editAction';
+import { EditAction, editAction } from './editAction';
 import { UIDocument } from './UIController.types';
 import { CommandsFactory } from './CommandsFactory';
 import { ScriptExecutor } from './ScriptExecutor';
@@ -44,7 +44,7 @@ export class UIController {
         }
     };
 
-    compileCropMessage = (msg: WsCropMessage): Action[] => {
+    compileCropMessage = (msg: WsCropMessage): EditAction[] => {
         console.log('compileCropMessage() msg=', msg);
         const layerName = 'img';
 
@@ -57,7 +57,7 @@ export class UIController {
         ];
     };
 
-    runScript = async (script: Action[]) => {
+    runScript = async (script: EditAction[]) => {
         this.executor.execute(script).then((code) => {
             console.log('runScript() then() code =', code);
         });

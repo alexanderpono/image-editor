@@ -1,5 +1,5 @@
-import { Action } from './editAction';
+import { EditAction } from './editAction';
 
 export class UIDocument {
-    history: Action[];
+    history: EditAction[];
 }

@@ -4,11 +4,11 @@ import { MoveByCommand } from './commands/MoveByCommand';
 import { NewDocumentCommand } from './commands/NewDocumentCommand';
 import { SaveAsPngCommand } from './commands/SaveAsPngCommand';
 import { UnknownCommand } from './commands/UnknownCommand';
-import { Action, EditEvent, NewDocumentAction } from './editAction';
+import { EditAction, EditEvent, NewDocumentAction } from './editAction';
 import { DocStateManager } from './store/doc/DocStateManager';
 
 export class CommandsFactory {
-    getCommand = (action: Action, doc: DocStateManager) => {
+    getCommand = (action: EditAction, doc: DocStateManager) => {
         switch (action.type) {
             case EditEvent.NEW_DOCUMENT:
                 return new NewDocumentCommand(action as NewDocumentAction, doc);
