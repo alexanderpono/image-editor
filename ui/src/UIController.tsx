@@ -7,14 +7,23 @@ import { Action, editAction } from './editAction';
 import { UIDocument } from './UIController.types';
 import { CommandsFactory } from './CommandsFactory';
 import { ScriptExecutor } from './ScriptExecutor';
+import { AppUI } from './components/AppUI';
+import { Provider } from 'react-redux';
+import { store } from './store';
+import { doc } from './store/doc/docReducer';
 
 export class UIController {
-    constructor(private ws: WsClient, private executor: ScriptExecutor) {}
+    protected canvasRef: React.RefObject<HTMLCanvasElement>;
+
+    constructor(private ws: WsClient, private executor: ScriptExecutor) {
+        this.canvasRef = React.createRef<HTMLCanvasElement>();
+    }
 
     go = () => {
         console.log('ui go!');
 
         this.ws.connect();
+        this.renderUI();
         return this;
     };
 
@@ -53,4 +62,15 @@ export class UIController {
             console.log('runScript() then() code =', code);
         });
     };
+
+    renderUI = () => {
+        render(this.getUI(), document.getElementById('ui'));
+        store.dispatch(doc.size({ x: 1, y: 1 }));
+    };
+
+    getUI = () => (
+        <Provider store={store}>
+            <AppUI ref={this.canvasRef} />
+        </Provider>
+    );
 }
