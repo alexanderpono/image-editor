@@ -1,4 +1,5 @@
 export enum WsEvent {
     DEFAULT = '',
-    HELLO = 'Привет'
+    HELLO = 'Привет',
+    CROP = 'CROP'
 }

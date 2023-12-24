@@ -7,7 +7,7 @@
     "test": "jest",
     "build": "webpack --node-env=production",
     "build-dev": "webpack --node-env=development",
-    "dev": "webpack serve --node-env=development",
+    "ui": "webpack serve --node-env=development",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "ts-check": "npx tsc --skipLibCheck"
@@ -24,6 +24,7 @@
     "redux-actions": "2.6.5",
     "redux-devtools-extension": "2.13.9",
     "redux-saga": "^1.2.3",
+    "reflect-metadata": "^0.2.1",
     "ts-serializable": "^3.0.52"
   },
   "devDependencies": {

@@ -2,9 +2,14 @@ import React from 'react';
 import { render } from 'react-dom';
 import { WsClient } from './ports/WsClient';
 import { WsEvent } from '@config/WsEvent';
+import { WsCropMessage, WsMessage } from './ports/WsMessage';
+import { Action, editAction } from './editAction';
+import { UIDocument } from './UIController.types';
+import { CommandsFactory } from './CommandsFactory';
+import { ScriptExecutor } from './ScriptExecutor';
 
 export class UIController {
-    constructor(private ws: WsClient) {}
+    constructor(private ws: WsClient, private executor: ScriptExecutor) {}
 
     go = () => {
         console.log('ui go!');
@@ -15,7 +20,37 @@ export class UIController {
 
     onWsMessage = (message: string) => {
         console.log('onWsMessage() message=', message);
-        const wsMessage = JSON.parse(message);
+        const wsMessage = JSON.parse(message) as WsMessage;
         console.log('onWsMessage() wsMessage=', wsMessage);
+        switch (wsMessage.event) {
+            case 'CROP':
+                const wsCropMessage = new WsCropMessage().fromJSON(wsMessage);
+                const script = this.compileCropMessage(wsCropMessage);
+                this.runScript(script);
+                console.log('script=', script);
+                break;
+            default:
+                console.log('Ws: Неизвестная команда', wsMessage.event);
+                break;
+        }
+    };
+
+    compileCropMessage = (msg: WsCropMessage): Action[] => {
+        console.log('compileCropMessage() msg=', msg);
+        const layerName = 'img';
+
+        return [
+            editAction.newDocument(msg.width, msg.height),
+            editAction.load(msg.inputFile, layerName),
+            editAction.moveBy(layerName, -msg.x, -msg.y),
+            editAction.saveAsPng(msg.outputFile),
+            editAction.closeDocument()
+        ];
+    };
+
+    runScript = async (script: Action[]) => {
+        this.executor.execute(script).then((code) => {
+            console.log('runScript() then() code =', code);
+        });
     };
 }
