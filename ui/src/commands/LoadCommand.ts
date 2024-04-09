@@ -8,6 +8,7 @@ export class LoadCommand {
     execute = () => {
         console.log('LoadCommand() action=', this.action);
         const pic = new Image();
+        pic.crossOrigin = 'anonymous';
 
         return new Promise((resolve, reject) => {
             pic.src =

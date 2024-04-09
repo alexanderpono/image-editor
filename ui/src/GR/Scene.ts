@@ -3,6 +3,8 @@ import { Point2D } from '@src/types';
 
 export interface UIControllerForScene {
     onLayerChanged: () => void;
+    getCanvas: () => HTMLCanvasElement;
+    getContext: () => CanvasRenderingContext2D;
 }
 
 export class Scene {
@@ -28,7 +30,8 @@ export class Scene {
 
     getDirty = () => this.dirty;
 
-    render = (context: CanvasRenderingContext2D, viewPortSize: Point2D) => {
+    render = () => {
+        const context = this.ctrl.getContext();
         context.drawImage(
             this.layer.pic,
             -this.layer.xy.x,
@@ -45,4 +48,6 @@ export class Scene {
     setXY = (xy: Point2D) => {
         this.layer.xy = { ...xy };
     };
+
+    getCanvas = () => this.ctrl.getCanvas();
 }

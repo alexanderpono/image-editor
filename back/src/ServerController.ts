@@ -3,6 +3,28 @@ import { WsServer } from './ports/WsServer';
 import { WS } from './ports/WsServer.types';
 import { RestServer } from './ports/RestServer';
 import path from 'path';
+import { object, string, number, date, array, mixed } from 'yup';
+import fs from 'fs';
+
+const MAX_FILE_SIZE = 2 * 1000 * 1000;
+const postFileSchema = object({
+    files: object({
+        file: object()
+            .shape({
+                name: string().required('files.file is a required field'),
+                size: number().max(
+                    MAX_FILE_SIZE,
+                    `Too large file. Max supported file size=${MAX_FILE_SIZE} bytes`
+                )
+            })
+            .required()
+    })
+});
+const ERR = {
+    NO_PRIV: { error: 'not enough privileges' },
+    SERVER_ERR: { error: 'Server error' },
+    VALIDATE_ERR: (data) => ({ error: 'Validate error', data })
+};
 
 interface JsonMessageFromUI {
     action: string;
@@ -56,5 +78,50 @@ export class ServerController {
         console.log('ServerController onRestGetFile() p=', p);
 
         response.sendFile(p);
+    };
+
+    onRestPostFile = (request, response) => {
+        console.log('ServerController onRestPostFile()');
+        response.header('Access-Control-Allow-Origin', '*');
+
+        let p = path.join(__dirname, '..', request.params.id);
+        const correctPath = path.join(__dirname, '..', 'data');
+
+        console.log('ServerController onRestPostFile() p=', p);
+        console.log('ServerController onRestPostFile() correctPath=', correctPath);
+        const pathIsOk = p.indexOf(correctPath) === 0;
+        console.log('ServerController onRestPostFile() pathIsOk=', pathIsOk);
+        if (!pathIsOk) {
+            response.status(403).send(ERR.VALIDATE_ERR(`POST path '${p}' is not supported`));
+            return;
+        }
+
+        postFileSchema
+            .validate(request)
+            .then(() => {
+                console.log('p=', p, path.dirname(p), path.basename(p));
+                return fs.promises.mkdir(path.dirname(p), { recursive: true });
+            })
+            .then(() => {
+                let data = request.files.file;
+                data.mv(p, function (err) {
+                    if (err) {
+                        return response.status(500).send(err);
+                    }
+                    response.status(201).send({
+                        name: data.name,
+                        type: data.mimetype,
+                        size: data.size
+                    });
+                });
+            })
+            .catch((err) => {
+                if (Array.isArray(err.errors)) {
+                    response.status(400).send(ERR.VALIDATE_ERR(err.errors));
+                } else {
+                    console.log('validate err=', err);
+                    response.status(500).send(ERR.SERVER_ERR);
+                }
+            });
     };
 }

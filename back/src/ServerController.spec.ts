@@ -1,5 +1,6 @@
 import { ServerController } from './ServerController';
 import { Logger } from './ports/Logger';
+import { RestServer } from './ports/RestServer';
 import { WsServer } from './ports/WsServer';
 import { WS } from './ports/WsServer.types';
 import { num } from './testFramework';
@@ -14,8 +15,11 @@ describe('ServerController', () => {
         const logger = castPartialTo<Logger>({
             log: jest.fn()
         });
+        const rest = castPartialTo<RestServer>({
+            run: () => {}
+        });
 
-        const ctrl = new ServerController(num(), ws, logger);
+        const ctrl = new ServerController(num(), ws, logger, rest);
         ctrl.onWsConnect();
 
         expect(ws.send).toHaveBeenCalledWith(WS.createWsHello());
@@ -29,8 +33,11 @@ describe('ServerController', () => {
         const logger = castPartialTo<Logger>({
             log: jest.fn()
         });
+        const rest = castPartialTo<RestServer>({
+            run: () => {}
+        });
 
-        const ctrl = new ServerController(num(), ws, logger);
+        const ctrl = new ServerController(num(), ws, logger, rest);
 
         expect(ctrl.onWsMesage('{}')).toBe('Ws: Неизвестная команда');
     });
@@ -43,8 +50,11 @@ describe('ServerController', () => {
         const logger = castPartialTo<Logger>({
             log: jest.fn()
         });
+        const rest = castPartialTo<RestServer>({
+            run: () => {}
+        });
 
-        const ctrl = new ServerController(num(), ws, logger);
+        const ctrl = new ServerController(num(), ws, logger, rest);
 
         expect(ctrl.onWsMesage('')).toBe('WS: not a JSON');
     });

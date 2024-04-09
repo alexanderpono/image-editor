@@ -5,7 +5,14 @@ import { MoveByCommand } from './commands/MoveByCommand';
 import { NewDocumentCommand } from './commands/NewDocumentCommand';
 import { SaveAsPngCommand } from './commands/SaveAsPngCommand';
 import { UnknownCommand } from './commands/UnknownCommand';
-import { EditAction, EditEvent, LoadAction, MoveByAction, NewDocumentAction } from './editAction';
+import {
+    EditAction,
+    EditEvent,
+    LoadAction,
+    MoveByAction,
+    NewDocumentAction,
+    SaveAsPngAction
+} from './editAction';
 import { DocStateManager } from './store/doc/DocStateManager';
 
 export class CommandsFactory {
@@ -18,7 +25,7 @@ export class CommandsFactory {
             case EditEvent.MOVE_BY:
                 return new MoveByCommand(action as MoveByAction, scene);
             case EditEvent.SAVE_AS_PNG:
-                return new SaveAsPngCommand();
+                return new SaveAsPngCommand(action as SaveAsPngAction, scene);
             case EditEvent.CLOSE_DOCUMENT:
                 return new CloseDocument();
             case EditEvent.DEFAULT:
