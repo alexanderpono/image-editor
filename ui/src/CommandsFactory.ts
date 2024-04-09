@@ -27,7 +27,7 @@ export class CommandsFactory {
             case EditEvent.SAVE_AS_PNG:
                 return new SaveAsPngCommand(action as SaveAsPngAction, scene);
             case EditEvent.CLOSE_DOCUMENT:
-                return new CloseDocument();
+                return new CloseDocument(doc, scene);
             case EditEvent.DEFAULT:
                 return new UnknownCommand();
         }

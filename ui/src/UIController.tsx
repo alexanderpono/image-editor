@@ -73,11 +73,17 @@ export class UIController {
 
     onLayerChanged = () => {
         console.error('onLayerChanged()');
+        this.scene.render();
+    };
 
-        const canvas = this.canvasRef.current as unknown as HTMLCanvasElement;
-        const docState = DocStateManager.create().getDoc();
-
+    getContext = (): CanvasRenderingContext2D => {
+        const canvas = this.getCanvas();
         const context = canvas.getContext('2d') as CanvasRenderingContext2D;
-        this.scene.render(context, docState.size);
+        return context;
+    };
+
+    getCanvas = (): HTMLCanvasElement => {
+        const canvas = this.canvasRef.current as unknown as HTMLCanvasElement;
+        return canvas;
     };
 }

@@ -49,7 +49,7 @@ export class ServerController {
     onWsConnect = () => {
         this.logger.log('onWsConnect()');
         this.ws.send(WS.createWsHello());
-        this.ws.send(WS.createWsCrop(2286, 9, 1827, 976, 'data/in/01.png', 'data/out/01.png'));
+        this.ws.send(WS.createWsCrop(2286, 9, 800, 600, 'data/in/01.png', 'data/out/01.png'));
     };
 
     onWsMesage = (message: string) => {
@@ -87,10 +87,7 @@ export class ServerController {
         let p = path.join(__dirname, '..', request.params.id);
         const correctPath = path.join(__dirname, '..', 'data');
 
-        console.log('ServerController onRestPostFile() p=', p);
-        console.log('ServerController onRestPostFile() correctPath=', correctPath);
         const pathIsOk = p.indexOf(correctPath) === 0;
-        console.log('ServerController onRestPostFile() pathIsOk=', pathIsOk);
         if (!pathIsOk) {
             response.status(403).send(ERR.VALIDATE_ERR(`POST path '${p}' is not supported`));
             return;
@@ -99,7 +96,6 @@ export class ServerController {
         postFileSchema
             .validate(request)
             .then(() => {
-                console.log('p=', p, path.dirname(p), path.basename(p));
                 return fs.promises.mkdir(path.dirname(p), { recursive: true });
             })
             .then(() => {
