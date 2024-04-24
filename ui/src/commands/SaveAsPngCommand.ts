@@ -32,7 +32,7 @@ export class SaveAsPngCommand {
         data.append('file', file);
 
         const request = axios.create({ baseURL: `http://localhost:${REST_SERVER_PORT}/` });
-        return request.post(`/file/${encodeURIComponent(this.action.fileName)}`, data, {
+        return request.post(`/files/${encodeURIComponent(this.action.fileName)}`, data, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }

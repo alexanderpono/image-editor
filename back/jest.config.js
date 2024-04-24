@@ -5,7 +5,7 @@ module.exports = {
     clearMocks: true,
     coverageDirectory: 'temp/coverage',
     testEnvironment: 'node',
-    collectCoverage: true,
+    collectCoverage: false,
     reporters: ['default'],
     collectCoverageFrom: [
         'src/**/*.ts*',
@@ -28,7 +28,7 @@ module.exports = {
         '^.+\\.(js|jsx|ts|tsx)$': '<rootDir>/node_modules/babel-jest'
     },
     moduleNameMapper: {},
-    verbose: false,
+    verbose: true,
     testPathIgnorePatterns: ['/node_modules/', 'temp'],
     transformIgnorePatterns: []
 };

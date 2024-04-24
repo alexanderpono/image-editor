@@ -49,7 +49,8 @@ export class ServerController {
     onWsConnect = () => {
         this.logger.log('onWsConnect()');
         this.ws.send(WS.createWsHello());
-        this.ws.send(WS.createWsCrop(2286, 9, 800, 600, 'data/in/01.png', 'data/out/01.png'));
+        // this.ws.send(WS.createWsCrop(2286, 9, 800, 600, 'data/in/01.png', 'data/out/01.png'));
+        this.ws.send(WS.createWsCrop(40, 120, 80, 80, 'data/in/sprite.png', 'data/out/01.png'));
     };
 
     onWsMesage = (message: string) => {
@@ -69,7 +70,7 @@ export class ServerController {
     };
 
     onRestGetFile = (request, response) => {
-        console.log('ServerController onRestGetFile()');
+        console.log('ServerController onRestGetFile() request.params.id=', request.params.id);
         response.header('Access-Control-Allow-Origin', '*');
 
         let p = path.join(__dirname, '..', request.params.id);
@@ -119,5 +120,9 @@ export class ServerController {
                     response.status(500).send(ERR.SERVER_ERR);
                 }
             });
+    };
+
+    onRestCrop = (request, response) => {
+        console.log('ServerController onRestCrop()');
     };
 }

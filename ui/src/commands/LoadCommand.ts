@@ -12,7 +12,7 @@ export class LoadCommand {
 
         return new Promise((resolve, reject) => {
             pic.src =
-                `http://localhost:${REST_SERVER_PORT}/file/` +
+                `http://localhost:${REST_SERVER_PORT}/files/` +
                 encodeURIComponent(this.action.fileName);
             pic.onload = () => {
                 this.scene.setPic(pic);
