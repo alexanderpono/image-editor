@@ -44,6 +44,7 @@ export class ScriptExecutor {
     };
 
     execute = (script: EditAction[]): Promise<string> => {
+        this.state = SEState.READY;
         this.script = script;
         return new Promise((resolve, reject) => {
             this.STT = [
@@ -108,7 +109,7 @@ export class ScriptExecutor {
                     action: () => {
                         resolve('finished');
                     },
-                    newState: SEState.EXECUTING_LINE
+                    newState: SEState.READY
                 }
             ];
 

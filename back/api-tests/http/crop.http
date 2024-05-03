@@ -1,0 +1,11 @@
+POST http://localhost:8725/crop 
+Content-Type: application/json
+
+{
+    "x": 40,
+    "y": 120,
+    "width": 80,
+    "height": 80,
+    "inputFile": "data/in/sprite.png",
+    "outputFile": "data/out/01.png"
+}

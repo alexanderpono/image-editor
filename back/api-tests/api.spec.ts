@@ -72,6 +72,7 @@ describe('api', () => {
             ${apiProvider().files().post}      | ${'1.png'}         | ${'POST /files returns file metadata'}             | ${201}           | ${ADMIN_FILE_P}     | ${fileMeta}
             ${apiProvider().files().postEmpty} | ${'1.png'}         | ${'POST /files(empty) returns validate error'}     | ${400}           | ${VALIDATE_ERROR_P} | ${ERR_REQUIRED_FIELD}
             ${apiProvider().files().post}      | ${'too-large.zip'} | ${'POST /files(too large) returns validate error'} | ${400}           | ${VALIDATE_ERROR_P} | ${ERR_TOO_LARGE}
+            ${apiProvider().crop().crop}       | ${''}              | ${'POST /crop returns ?'}                          | ${200}           | ${null}             | ${null}
         `('$testName', async ({ api, params, projection, expectedHttpCode, expectedVal }) => {
             const r = await api(params);
 

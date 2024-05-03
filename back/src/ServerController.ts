@@ -49,8 +49,6 @@ export class ServerController {
     onWsConnect = () => {
         this.logger.log('onWsConnect()');
         this.ws.send(WS.createWsHello());
-        // this.ws.send(WS.createWsCrop(2286, 9, 800, 600, 'data/in/01.png', 'data/out/01.png'));
-        this.ws.send(WS.createWsCrop(40, 120, 80, 80, 'data/in/sprite.png', 'data/out/01.png'));
     };
 
     onWsMesage = (message: string) => {
@@ -123,6 +121,37 @@ export class ServerController {
     };
 
     onRestCrop = (request, response) => {
-        console.log('ServerController onRestCrop()');
+        const postLessonSchema = object({
+            x: number().required(),
+            y: number().required(),
+            width: number().required(),
+            height: number().required(),
+            inputFile: string().required(),
+            outputFile: string().required()
+        });
+
+        postLessonSchema
+            .validate(request.body)
+            .then((params) => {
+                this.ws.send(
+                    WS.createWsCrop(
+                        params.x,
+                        params.y,
+                        params.width,
+                        params.height,
+                        params.inputFile,
+                        params.outputFile
+                    )
+                );
+                response.status(200).send();
+            })
+            .catch((err) => {
+                if (Array.isArray(err.errors)) {
+                    response.status(400).send(ERR.VALIDATE_ERR(err.errors));
+                } else {
+                    console.log('validate err=', err);
+                    response.status(500).send(ERR.SERVER_ERR);
+                }
+            });
     };
 }

@@ -18,6 +18,10 @@ program
     .option('-c, --command <command>', 'command')
     .option('-p1, --param1 <param1>', 'parameter 1')
     .option('-p2, --param2 <param2>', 'parameter 2')
+    .option('-p3, --param3 <param3>', 'parameter 3')
+    .option('-p4, --param4 <param4>', 'parameter 4')
+    .option('-p5, --param5 <param5>', 'parameter 5')
+    .option('-p6, --param6 <param6>', 'parameter 6')
     .option('-pr, --pretty', 'pretty output')
     .parse(process.argv);
 
@@ -105,6 +109,63 @@ switch (options.command) {
             .catch((e) => {
                 if (e.response.status === 401 || e.response.status === 403) {
                     console.log(e.response.status, e.response.data);
+                } else {
+                    console.log(e);
+                }
+            });
+
+        break;
+    }
+
+    case 'crop': {
+        if (!options.param1) {
+            console.log('-p1 required');
+            break;
+        }
+        if (!options.param2) {
+            console.log('-p2 required');
+            break;
+        }
+        if (!options.param3) {
+            console.log('-p3 required');
+            break;
+        }
+        if (!options.param4) {
+            console.log('-p4 required');
+            break;
+        }
+        if (!options.param5) {
+            console.log('-p5 required');
+            break;
+        }
+        if (!options.param6) {
+            console.log('-p6 required');
+            break;
+        }
+        const headers = {
+            Accept: 'application/json'
+        };
+        if (options.login) {
+            headers['Content-Type'] = `application/json`;
+        }
+        const data = {
+            x: options.param1,
+            y: options.param2,
+            width: options.param3,
+            height: options.param3,
+            inputFile: options.param5,
+            outputFile: options.param6
+        };
+        axios
+            .post(url.localApi + `/crop`, data, {
+                headers
+            })
+            .then((res) => {
+                console.log('finish');
+            })
+            .catch((e) => {
+                if (e.response.status === 401 || e.response.status === 403) {
+                    console.log(e.response.status, e.response?.data?.statusMessage);
                 } else {
                     console.log(e);
                 }

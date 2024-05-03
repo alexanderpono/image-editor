@@ -67,6 +67,10 @@ Options:
   -c, --command <command>  command
   -p1, --param1 <param1>   parameter 1
   -p2, --param2 <param2>   parameter 2
+  -p3, --param3 <param3>   parameter 3
+  -p4, --param4 <param4>   parameter 4
+  -p5, --param5 <param5>   parameter 5
+  -p6, --param6 <param6>   parameter 6
   -pr, --pretty            pretty output
   -h, --help               display help for command`;
 

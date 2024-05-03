@@ -21,6 +21,7 @@ export class RestServer {
     run = () => {
         this.app = express();
         this.app.use(fileUpload());
+        this.app.use(express.json());
 
         const originalSend = this.app.response.send;
 
@@ -62,7 +63,7 @@ export class RestServer {
 
         this.app.get('/files/:id', this.ctrl.onRestGetFile);
         this.app.post('/files/:id', this.ctrl.onRestPostFile);
-        this.app.get('/crop', this.ctrl.onRestCrop);
+        this.app.post('/crop', this.ctrl.onRestCrop);
 
         this.app.listen(this.port);
     };
